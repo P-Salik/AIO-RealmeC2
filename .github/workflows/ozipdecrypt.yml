@@ -30,7 +30,7 @@ jobs:
        - name: Downloading Ozip Now.. 
          run: |
             sudo -E apt-get -qq update
-            apt install brotli
+            sudo apt install brotli
             sudo apt install aria2 expect -y
             aria2c $FIRMWARE_LINK
              
