@@ -60,7 +60,7 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd cd /home/frs/project/realme-c2/Test\r\"
+              send \"cd /home/frs/project/realme-c2/Test\r\"
               set timeout -1
               send \"put $FIRMWARE_ZIP_NAME.zip\r\"
               expect \"Uploading\"
