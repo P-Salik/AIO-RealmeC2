@@ -49,7 +49,7 @@ jobs:
              sudo python sdat2img.py system.transfer.list system.new.dat system.img
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
              cd ..
-             zip -r $FIRMWARE_ZIP_NAME.zip ./out/*
+             zip -r $FIRMWARE_ZIP_NAME.zip ./out/*.img ./out/*.bin
 
        - name: Upload Decrypted Zip
          run: |
