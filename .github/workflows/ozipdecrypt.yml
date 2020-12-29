@@ -42,11 +42,12 @@ jobs:
              sudo -H pip install setuptools wheel docopt pycryptodome zip
              wget https://raw.githubusercontent.com/siddhrsh/oppo_ozip_decrypt/master/ozipdecrypt.py
              sudo python ozipdecrypt.py $FIRMWARE_NAME
-             brotli -d ./out/system.new.dat.br
-             brotli -d ./out/vendor.new.dat.br
+             cd out
+             brotli -d system.new.dat.br
+             brotli -d out/vendor.new.dat.br
              wget https://raw.githubusercontent.com/siddhrsh/sdat2img/master/sdat2img.py
-             sudo python sdat2img.py ./out/system.transfer.list ./out/system.new.dat ./out/system.img
-             sudo python sdat2img.py ./out/vendor.transfer.list ./out/vendor.new.dat ./out/vendor.img
+             sudo python sdat2img.py system.transfer.list system.new.dat system.img
+             sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
              zip -r $FIRMWARE_ZIP_NAME.zip ./out/*
 
        - name: Upload Decrypted Zip
