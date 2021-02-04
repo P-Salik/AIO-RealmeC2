@@ -66,7 +66,7 @@ jobs:
              sudo wget https://raw.githubusercontent.com/siddhrsh/sdat2img/master/sdat2img.py
              sudo python sdat2img.py system.transfer.list system.new.dat system.img
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
-             zip -r $FIRMWARE_ZIP_NAME.zip *.img *.bin
+             sudo zip -r $FIRMWARE_ZIP_NAME.zip *.img *.bin
 
        - name: Upload Fastboot Zip
          run: |
