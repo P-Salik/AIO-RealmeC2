@@ -17,6 +17,8 @@ env:
   FIRMWARE_LINK: https://otaafsg-cost.realmemobile.com/RMX1945/RMX1941EX_11.C.53_1530_202102012004/patch/amazone2/GLO/RMX1941EX/RMX1941EX_11.C.53_1530_202102012004/RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369.ozip
   FIRMWARE_NAME: RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369.ozip
   FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f
+  BASE: RealmeUI
+  #BASE: ColorOS
   TZ: Asia/Kolkata
 
 jobs:
@@ -47,7 +49,7 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd /home/pfs/project/realme-c2/RealmeUI/Ozip\r\"
+              send \"cd /home/pfs/project/realme-c2/$BASE/Ozip\r\"
               set timeout -1
               send \"put $FIRMWARE_NAME\r\"
               expect \"Uploading\"
@@ -72,7 +74,7 @@ jobs:
              sudo python sdat2img.py system.transfer.list system.new.dat system.img
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
              sudo zip -r $FIRMWARE_ZIP_NAME.zip *.img *.bin
-
+                  
        - name: Upload Fastboot Zip to SF
          run: |
               expect -c " 
@@ -82,15 +84,28 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd '/home/pfs/project/realme-c2/RealmeUI/Fastboot Rom'\r\"
+              send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
               set timeout -1
               send \"put $FIRMWARE_ZIP_NAME.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"bye\r\"
-              interact"     
+              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Boot'\r\"
+              set timeout -1
+              send \"put boot.img\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
+              set timeout -1
+              send \"put vendor.img\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"bye\r\"  
 
        - name: Uploading Fastboot Zip to Android File Host
          run: |
              curl -ftp-pasv -T *.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T boot.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T vendor.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
