@@ -70,9 +70,9 @@ jobs:
              cd out
              sudo rm -rf compability.zip
              
-       - name: Creating Cos to Rmui zip
-         run: |
-             sudo zip -r $FIRMWARE_ZIP_NAME.zip *
+#       - name: Creating Cos to Rmui zip
+#         run: |
+#             sudo zip -r $FIRMWARE_ZIP_NAME.zip *
 
        - name: Creating Fastboot rom
          run: |
