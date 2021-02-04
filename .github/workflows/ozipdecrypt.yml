@@ -102,7 +102,8 @@ jobs:
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"bye\r\"  
+              send \"bye\r\"
+              interact"
 
        - name: Uploading Fastboot Zip to Android File Host
          run: |
