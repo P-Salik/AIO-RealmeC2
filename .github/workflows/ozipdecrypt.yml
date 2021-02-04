@@ -33,8 +33,12 @@ jobs:
             sudo apt install brotli
             sudo apt install aria2 expect -y
             aria2c $FIRMWARE_LINK
-
-       - name: Uploading OZip
+            
+       - name: Uploading Ozip Android File Host
+         run: |
+             curl -ftp-pasv -T $FIRMWARE_NAME ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             
+       - name: Uploading OZip To SF
          run: |
               expect -c " 
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
@@ -43,7 +47,7 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd /home/frs/project/realme-c2/Test\r\"
+              send \"cd /home/pfs/project/realme-c2/RealmeUI/Ozip\r\"
               set timeout -1
               send \"put $FIRMWARE_NAME\r\"
               expect \"Uploading\"
@@ -51,7 +55,8 @@ jobs:
               expect \"sftp>\"
               send \"bye\r\"
               interact"
-             
+
+
        - name: Decrypting Ozip Now
          run: |
              sudo -E apt-get -qq update
@@ -68,7 +73,7 @@ jobs:
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
              sudo zip -r $FIRMWARE_ZIP_NAME.zip *.img *.bin
 
-       - name: Upload Fastboot Zip
+       - name: Upload Fastboot Zip to SF
          run: |
               expect -c " 
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
@@ -77,7 +82,7 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd /home/frs/project/realme-c2/Test\r\"
+              send \"cd '/home/pfs/project/realme-c2/RealmeUI/Fastboot Rom'\r\"
               set timeout -1
               send \"put $FIRMWARE_ZIP_NAME.zip\r\"
               expect \"Uploading\"
@@ -85,3 +90,7 @@ jobs:
               expect \"sftp>\"
               send \"bye\r\"
               interact"     
+
+       - name: Uploading Fastboot Zip to Android File Host
+         run: |
+             curl -ftp-pasv -T *.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
