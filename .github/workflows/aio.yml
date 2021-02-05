@@ -102,6 +102,7 @@ jobs:
 
        - name: Creating Fastboot rom
          run: |
+             cd out
              sudo brotli -d system.new.dat.br
              sudo brotli -d vendor.new.dat.br
              sudo wget https://raw.githubusercontent.com/siddhrsh/sdat2img/master/sdat2img.py
