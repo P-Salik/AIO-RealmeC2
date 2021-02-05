@@ -73,7 +73,8 @@ jobs:
          run: |
              sudo rm -rf META-INF/com/google/android/updater-script
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recovery.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
+             aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic53.img
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
              sudo zip -r costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
 
        - name: Uploading Ozip Android File Host
