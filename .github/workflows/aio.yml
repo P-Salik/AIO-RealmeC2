@@ -71,7 +71,7 @@ jobs:
 
        - name: Creating Cos to Rmui zip
          run: |
-             sudo rm -rf META-INF/com/google/android/updater-script
+             sudo rm -rf out/META-INF/com/google/android/updater-script
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
              aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic53.img
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
@@ -142,6 +142,7 @@ jobs:
 
        - name: Creating Vendor zip
          run: |
+             cd out
              sudo rm -rf META-INF/com/google/android/updater-script
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-scriptvendor /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
              sudo zip -r vendor.zip META-INF vendor.img
