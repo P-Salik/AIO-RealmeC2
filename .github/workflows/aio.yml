@@ -108,7 +108,7 @@ jobs:
              sudo wget https://raw.githubusercontent.com/siddhrsh/sdat2img/master/sdat2img.py
              sudo python sdat2img.py system.transfer.list system.new.dat system.img
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
-             sudo zip -r $FIRMWARE_ZIP_NAME.zip *.img *.bin
+             sudo zip -r Fastboot.zip *.img *.bin
                   
        - name: Upload Files to SF
          run: |
@@ -121,7 +121,7 @@ jobs:
               expect \"sftp> \"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
               set timeout -1
-              send \"put $FIRMWARE_ZIP_NAME.zip\r\"
+              send \"put Fastboot.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
