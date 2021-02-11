@@ -71,12 +71,12 @@ jobs:
 
        - name: Creating Cos to Rmui zip
          run: |
-             sudo rm -rf out/META-INF/com/google/android/updater-script
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
-             aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic53.img
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
-             cd out
-             sudo zip -r costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
+#             sudo rm -rf out/META-INF/com/google/android/updater-script
+#             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
+#             aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic53.img
+#             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
+#             cd out
+#             sudo zip -r costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
 
        - name: Uploading Ozip Android File Host
          run: |
@@ -112,27 +112,27 @@ jobs:
                   
        - name: Upload Files to SF
          run: |
-   #           expect -c " 
-   #           spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-   #           expect \"yes/no\"
-   #           send \"yes\r\"
-   #           expect \"Password\"        
-   #           send \"${{ secrets.SFPASS }}\r\"
-   #           expect \"sftp> \"
-   #           send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
-   #           set timeout -1
-   #           send \"put $FIRMWARE_ZIP_NAME.zip\r\"
-   #           expect \"Uploading\"
-   #           expect \"100%\"
-   #           expect \"sftp>\"
-   #           send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Boot'\r\"
-   #           set timeout -1
-   #           send \"put boot.img\r\"
-   #           expect \"Uploading\"
-   #           expect \"100%\"
-   #           expect \"sftp>\"
-   #           send \"bye\r\"
-   #           interact"
+              expect -c " 
+              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+              expect \"yes/no\"
+              send \"yes\r\"
+              expect \"Password\"        
+              send \"${{ secrets.SFPASS }}\r\"
+              expect \"sftp> \"
+              send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
+              set timeout -1
+              send \"put $FIRMWARE_ZIP_NAME.zip\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Boot'\r\"
+              set timeout -1
+              send \"put boot.img\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"bye\r\"
+              interact"
 
        - name: Uploading Fastboot Zip to Android File Host
          run: |
@@ -147,11 +147,11 @@ jobs:
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-scriptvendor /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
              sudo zip -r vendor.zip META-INF vendor.img
 
-       - name: Uploading Ozip Android File Host
+       - name: Uploading Vendor to Android File Host
          run: |
 #             curl -ftp-pasv -T vendor.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
              
-       - name: Uploading OZip To SF
+       - name: Uploading Vendor To SF
          run: |
 #              expect -c " 
 #              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
