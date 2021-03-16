@@ -96,7 +96,7 @@ patch_minimal_manifest() {
 
 # get the OrangeFox recovery sources
 clone_fox_recovery() {
-local URL=""
+local URL="https://gitlab.com/OrangeFox/bootable/Recovery.git"
    if [ "$USE_SSH" = "0" ]; then
       URL="https://gitlab.com/OrangeFox/bootable/Recovery.git"
    else
@@ -133,8 +133,6 @@ clone_fox_vendor() {
 local URL
    if [ "$USE_SSH" = "0" ]; then
       URL="https://gitlab.com/OrangeFox/vendor/recovery.git"
-   else
-      URL="git@gitlab.com:OrangeFox/vendor/recovery.git"
    fi
    
    echo "-- Preparing for cloning the OrangeFox vendor tree ..."
@@ -161,7 +159,7 @@ local DIR=$MANIFEST_DIR/device/xiaomi
    }
 
    # test device
-   local URL=git@gitlab.com:OrangeFox/device/"$test_build_device".git
+   local URL=https://gitlab.com/OrangeFox/device/"$test_build_device".git
    [ "$USE_SSH" = "0" ] && URL=https://gitlab.com/OrangeFox/device/"$test_build_device".git
    echo "-- Pulling the $test_build_device device tree ..."
    git clone $URL -b $FOX_10_BRANCH"_test" "$test_build_device"
