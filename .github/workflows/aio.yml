@@ -14,11 +14,11 @@ on:
     types: [started]
 
 env:
-  FIRMWARE_LINK: https://otaafsg-cost.realmemobile.com/RMX1945/RMX1941EX_11.C.53_1530_202102012004/patch/amazone2/GLO/RMX1941EX/RMX1941EX_11.C.53_1530_202102012004/RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369.ozip
-  FIRMWARE_NAME: RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369.ozip
-  FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f
-  BASE: RealmeUI
-  #BASE: ColorOS
+  FIRMWARE_LINK: https://download.c.realme.com/osupdate/RMX1941EX_11_OTA_0330_all_FyoSvn8Rclbv.ozip
+  FIRMWARE_NAME: RMX1941EX_11_OTA_0330_all_FyoSvn8Rclbv.ozip
+  FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_0330_all_FyoSvn8Rclbv
+  #BASE: RealmeUI
+  BASE: ColorOS
   TZ: Asia/Kolkata
 
 jobs:
@@ -38,25 +38,25 @@ jobs:
             
        - name: Uploading Ozip Android File Host
          run: |
-#             curl -ftp-pasv -T $FIRMWARE_NAME ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T $FIRMWARE_NAME ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
              
        - name: Uploading OZip To SF
          run: |
-#              expect -c " 
-#              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-#              expect \"yes/no\"
-#              send \"yes\r\"
-#              expect \"Password\"        
-#              send \"${{ secrets.SFPASS }}\r\"
-#              expect \"sftp> \"
-#              send \"cd /home/pfs/project/realme-c2/$BASE/Ozip\r\"
-#              set timeout -1
-#              send \"put $FIRMWARE_NAME\r\"
-#              expect \"Uploading\"
-#              expect \"100%\"
-#              expect \"sftp>\"
-#              send \"bye\r\"
-#              interact"
+              expect -c " 
+              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+              expect \"yes/no\"
+              send \"yes\r\"
+              expect \"Password\"        
+              send \"${{ secrets.SFPASS }}\r\"
+              expect \"sftp> \"
+              send \"cd /home/pfs/project/realme-c2/$BASE/Ozip\r\"
+              set timeout -1
+              send \"put $FIRMWARE_NAME\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"bye\r\"
+              interact"
 
 
        - name: Decrypting Ozip Now
@@ -136,9 +136,9 @@ jobs:
 
        - name: Uploading Fastboot Zip to Android File Host
          run: |
-    #         curl -ftp-pasv -T $FIRMWARE_ZIP_NAME.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-    #         curl -ftp-pasv -T boot.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-    #         curl -ftp-pasv -T vendor.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T $FIRMWARE_ZIP_NAME.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T boot.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T vendor.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
 
        - name: Creating Vendor zip
          run: |
@@ -149,22 +149,21 @@ jobs:
 
        - name: Uploading Vendor to Android File Host
          run: |
-#             curl -ftp-pasv -T vendor.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+             curl -ftp-pasv -T vendor.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
              
        - name: Uploading Vendor To SF
          run: |
-#              expect -c " 
-#              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-#              expect \"yes/no\"
-#              send \"yes\r\"
-#              expect \"Password\"        
-#              send \"${{ secrets.SFPASS }}\r\"
-#              expect \"sftp> \"
-#              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
-#              set timeout -1
-#              send \"put vendor.zip\r\"
-#              expect \"Uploading\"
-#              expect \"100%\"
-#              expect \"sftp>\"
-#              send \"bye\r\"
-#              interact"
+              expect -c " 
+              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net            expect \"yes/no\"
+              send \"yes\r\"
+              expect \"Password\"        
+              send \"${{ secrets.SFPASS }}\r\"
+              expect \"sftp> \"
+              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
+              set timeout -1
+              send \"put vendor.zip\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"bye\r\"
+              interact"
