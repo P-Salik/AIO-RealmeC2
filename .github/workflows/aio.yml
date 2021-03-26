@@ -35,8 +35,46 @@ jobs:
             sudo apt install brotli
             sudo apt install aria2 expect -y
             aria2c $FIRMWARE_LINK
-                        
-       - name: Uploading OZip To SF
+
+       - name: Decrypting Ozip Now
+         run: |
+             sudo -E apt-get -qq update
+             sudo apt-get install python-pip
+             sudo -H pip install --upgrade pip
+             sudo -H pip install setuptools wheel docopt pycryptodome zip
+             wget https://raw.githubusercontent.com/siddhrsh/oppo_ozip_decrypt/master/ozipdecrypt.py
+             sudo python ozipdecrypt.py $FIRMWARE_NAME
+
+       - name: Creating Cos to Rmui zip
+         run: |
+             sudo rm -rf out/META-INF/com/google/android/updater-script
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
+             aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic55.img
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
+             cd out
+             sudo zip costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/costormui.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/costormui.zip
+
+       - name: Creating Fastboot rom
+         run: |
+             cd out
+             sudo brotli -d system.new.dat.br
+             sudo brotli -d vendor.new.dat.br
+             sudo wget https://raw.githubusercontent.com/siddhrsh/sdat2img/master/sdat2img.py
+             sudo python sdat2img.py system.transfer.list system.new.dat system.img
+             sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
+             sudo zip -r9 Fastboot.zip *.img *.bin
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/Fastboot.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/Fastboot.zip
+             
+       - name: Creating Vendor zip
+         run: |
+             cd out
+             sudo rm -rf META-INF/com/google/android/updater-script
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-scriptvendor /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
+             sudo zip vendor.zip META-INF vendor.img
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/vendor.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/vendor.zip
+
+       - name: Uploading Files To SourceForge
          run: |
               expect -c " 
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
@@ -51,71 +89,12 @@ jobs:
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"bye\r\"
-              interact"
-              
-       - name: Uploading Ozip Android File Host
-         run: |
-#             curl -ftp-pasv -T $FIRMWARE_NAME ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-
-       - name: Decrypting Ozip Now
-         run: |
-             sudo -E apt-get -qq update
-             sudo apt-get install python-pip
-             sudo -H pip install --upgrade pip
-             sudo -H pip install setuptools wheel docopt pycryptodome zip
-             wget https://raw.githubusercontent.com/siddhrsh/oppo_ozip_decrypt/master/ozipdecrypt.py
-             sudo python ozipdecrypt.py $FIRMWARE_NAME
-             cd out
-
-       - name: Creating Cos to Rmui zip
-         run: |
-             sudo rm -rf out/META-INF/com/google/android/updater-script
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
-             aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic53.img
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
-             cd out
-             sudo zip -r costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
-
-       - name: Uploading Ozip Android File Host
-         run: |
- #            curl -ftp-pasv -T costormui.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-             
-       - name: Uploading OZip To SF
-         run: |
-              expect -c " 
-              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-              send \"yes\r\"
-              expect \"Password\"        
-              send \"${{ secrets.SFPASS }}\r\"
-              expect \"sftp> \"
               send \"cd '/home/pfs/project/realme-c2/ColorOS to Rmui'\r\"
               set timeout -1
               send \"put costormui.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"bye\r\"
-              interact"
-
-       - name: Creating Fastboot rom
-         run: |
-             cd out
-             sudo brotli -d system.new.dat.br
-             sudo brotli -d vendor.new.dat.br
-             sudo wget https://raw.githubusercontent.com/siddhrsh/sdat2img/master/sdat2img.py
-             sudo python sdat2img.py system.transfer.list system.new.dat system.img
-             sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
-             sudo zip -r Fastboot.zip *.img *.bin
-                  
-       - name: Upload Files to SF
-         run: |
-              expect -c " 
-              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-              send \"yes\r\"
-              expect \"Password\"        
-              send \"${{ secrets.SFPASS }}\r\"
-              expect \"sftp> \"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
               set timeout -1
               send \"put Fastboot.zip\r\"
@@ -128,34 +107,6 @@ jobs:
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"bye\r\"
-              interact"
-
-       - name: Uploading Fastboot Zip to Android File Host
-         run: |
-  #           curl -ftp-pasv -T $FIRMWARE_ZIP_NAME.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-    #         curl -ftp-pasv -T boot.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-   #          curl -ftp-pasv -T vendor.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-
-       - name: Creating Vendor zip
-         run: |
-             cd out
-             sudo rm -rf META-INF/com/google/android/updater-script
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-scriptvendor /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
-             sudo zip -r vendor.zip META-INF vendor.img
-
-       - name: Uploading Vendor to Android File Host
-         run: |
-     #        curl -ftp-pasv -T vendor.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-             
-       - name: Uploading Vendor To SF
-         run: |
-              expect -c " 
-              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net            expect \"yes/no\"
-              send \"yes\r\"
-              expect \"Password\"        
-              send \"${{ secrets.SFPASS }}\r\"
-              expect \"sftp> \"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
               set timeout -1
               send \"put vendor.zip\r\"
@@ -164,3 +115,13 @@ jobs:
               expect \"sftp>\"
               send \"bye\r\"
               interact"
+
+       - name: Uploading Files to Android File Host
+         run: |
+#             curl -ftp-pasv -T $FIRMWARE_NAME ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+#             curl -ftp-pasv -T costormui.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+#             curl -ftp-pasv -T $FIRMWARE_ZIP_NAME.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+#             curl -ftp-pasv -T boot.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+#             curl -ftp-pasv -T vendor.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+#             curl -ftp-pasv -T vendor.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
+
