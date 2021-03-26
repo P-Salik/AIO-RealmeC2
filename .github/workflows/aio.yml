@@ -14,9 +14,9 @@ on:
     types: [started]
 
 env:
-  FIRMWARE_LINK: https://otaafsg-cost.realmemobile.com/RMX1941/RMX1941EX_11.C.53_1530_202102012004/patch/amazone2/GLO/RMX1941EX/RMX1941EX_11.C.53_1530_202102012004/RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369.ozip
-  FIRMWARE_NAME: RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369.ozip
-  FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_1530_all_NFstHv8pEo4f_e8369
+  FIRMWARE_LINK: https://otaafsg-cost.realmemobile.com/RMX1945/RMX1941EX_11.C.55_1550_202103222012/patch/amazone2/GLO/RMX1941EX/RMX1941EX_11.C.55_1550_202103222012/RMX1941EX_11_OTA_1550_all_xdUfPxlTIxEA_9cf65aae1eb1480.ozip
+  FIRMWARE_NAME: RMX1941EX_11_OTA_1550_all_xdUfPxlTIxEA_9cf65aae1eb1480.ozip
+  FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_1550_all_xdUfPxlTIxEA_9cf65aae1eb1480
   BASE: RealmeUI
   #BASE: ColorOS
   TZ: Asia/Kolkata
@@ -50,7 +50,7 @@ jobs:
              sudo rm -rf out/META-INF/com/google/android/updater-script
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
              aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic55.img
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic53.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic55.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
              cd out
              sudo zip costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/costormui.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/costormui.zip
