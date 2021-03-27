@@ -54,7 +54,7 @@ jobs:
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic55.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
              cd out
              sudo zip costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/costormui.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/costormui$VERSION.zip
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/costormui.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/costormui-$VERSION.zip
 
        - name: Creating Fastboot rom
          run: |
@@ -65,8 +65,8 @@ jobs:
              sudo python sdat2img.py system.transfer.list system.new.dat system.img
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
              sudo zip -r9 Fastboot.zip *.img *.bin
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/Fastboot.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/Fastboot$VERSION.zip
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/boot /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/boot$VERSION.img
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/Fastboot.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/Fastboot-$VERSION.zip
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/boot /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/boot-$VERSION.img
              
        - name: Creating Vendor zip
          run: |
@@ -74,7 +74,7 @@ jobs:
              sudo rm -rf META-INF/com/google/android/updater-script
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-scriptvendor /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
              sudo zip vendor.zip META-INF vendor.img
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/vendor.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/vendor.zip
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/vendor.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/vendor-$VERSION.zip
 
        - name: Uploading Files To SourceForge
          run: |
@@ -92,19 +92,19 @@ jobs:
               expect \"sftp>\"
               send \"cd '/home/pfs/project/realme-c2/ColorOS to Rmui'\r\"
               set timeout -1
-              send \"put costormui$VERSION.zip\r\"
+              send \"put costormui-$VERSION.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
               set timeout -1
-              send \"put Fastboot$VERSION.zip\r\"
+              send \"put Fastboot-$VERSION.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Boot'\r\"
               set timeout -1
-              send \"put boot$VERSION.img\r\"
+              send \"put boot-$VERSION.img\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
