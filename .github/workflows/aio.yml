@@ -110,7 +110,7 @@ jobs:
               expect \"sftp>\"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
               set timeout -1
-              send \"put vendor.zip\r\"
+              send \"put vendor-$VERSION.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
