@@ -80,6 +80,7 @@ jobs:
          run: |
               expect -c " 
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+              expect \"yes/no\"
               send \"yes\r\"
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
