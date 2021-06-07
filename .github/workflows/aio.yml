@@ -66,7 +66,7 @@ jobs:
              sudo python sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
              sudo zip -r9 Fastboot.zip *.img *.bin
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/Fastboot.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/Fastboot$VERSION.zip
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/boot.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/boot$VERSION.img
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/boot.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/Stockboot$VERSION.img
              
        - name: Creating Vendor zip
          run: |
@@ -74,7 +74,7 @@ jobs:
              sudo rm -rf META-INF/com/google/android/updater-script
              sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-scriptvendor /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
              sudo zip vendor.zip META-INF vendor.img
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/vendor.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/vendor.zip
+             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/vendor.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/vendor$VERSION.zip
 
        - name: Uploading Files To SourceForge
          run: |
@@ -105,13 +105,13 @@ jobs:
               expect \"sftp>\"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Boot'\r\"
               set timeout -1
-              send \"put boot$VERSION.img\r\"
+              send \"put Stockboot$VERSION.img\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
               send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
               set timeout -1
-              send \"put vendor.zip\r\"
+              send \"put vendor$VERSION.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
