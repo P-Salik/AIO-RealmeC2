@@ -3,7 +3,7 @@ name: AIO file genrator & uploader
 on:
 #  release:
 #    types: [published]
-#  push:
+  push:
 #    branches:
 #      - master
 #    paths:
@@ -14,13 +14,13 @@ on:
     types: [started]
 
 env:
-  FIRMWARE_LINK: https://otafsg-cost.realmemobile.com/RMX1941/RMX1941EX_11.C.57_1570_202105312053/patch/amazone2/GLO/RMX1941EX/RMX1941EX_11.C.57_1570_202105312053/RMX1941EX_11_OTA_1570_all_g39iHFP1Me44_9f1f7065a523.ozip
-  FIRMWARE_NAME: RMX1941EX_11_OTA_1570_all_g39iHFP1Me44_9f1f7065a523.ozip
-  FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_1570_all_g39iHFP1Me44_9f1f7065a523
-  BASE: RealmeUI
-  #BASE: ColorOS
+  FIRMWARE_LINK: https://download.c.realme.com/osupdate/RMX1941EX_11_OTA_0100_all_6Tw0LV9IfSI3.ozip
+  FIRMWARE_NAME: RMX1941EX_11_OTA_0100_all_6Tw0LV9IfSI3.ozip
+  FIRMWARE_ZIP_NAME: RMX1941EX_11_OTA_0100_all_6Tw0LV9IfSI3
+  #BASE: RealmeUI
+  BASE: ColorOS
   TZ: Asia/Kolkata
-  VERSION: C55
+  VERSION: A10
 
 jobs:
   build:
@@ -45,16 +45,6 @@ jobs:
              sudo -H pip install setuptools wheel docopt pycryptodome zip
              wget https://raw.githubusercontent.com/siddhrsh/oppo_ozip_decrypt/master/ozipdecrypt.py
              sudo python ozipdecrypt.py $FIRMWARE_NAME
-
-       - name: Creating Cos to Rmui zip
-         run: |
-             sudo rm -rf out/META-INF/com/google/android/updater-script
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/updater-script /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/META-INF/com/google/android/updater-script
-             aria2c https://cfhcable.dl.sourceforge.net/project/realme-c2/RealmeUI/Stock%20Image/Recovery/recoveryrmuic55.img
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/recoveryrmuic55.img /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/recovery.img
-             cd out
-             sudo zip costormui.zip META-INF logo.bin preloader_ufs.img system.patch.dat vendor.patch.dat boot.img md1img.img scatter.txt system.transfer.list vendor.transfer.list oppo_operate_data.sh scp.img tee.img data_update_patch oppo_update_script.sh spmfw.img type.txt dtbo.img preloader.img sspm.img vbmeta.img lk.img preloader_emmc.img system.new.dat.br recovery.img vendor.new.dat.br
-             sudo mv /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/out/costormui.zip /home/runner/work/AIO-RealmeC2/AIO-RealmeC2/costormui$VERSION.zip
 
        - name: Creating Fastboot rom
          run: |
@@ -85,31 +75,25 @@ jobs:
               expect \"Password\"        
               send \"${{ secrets.SFPASS }}\r\"
               expect \"sftp> \"
-              send \"cd /home/pfs/project/realme-c2/$BASE/Ozip\r\"
+              send \"cd /home/pfs/project/rmx-1941/$BASE/Ozip\r\"
               set timeout -1
               send \"put $FIRMWARE_NAME\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"cd '/home/pfs/project/realme-c2/ColorOS to Rmui'\r\"
-              set timeout -1
-              send \"put costormui$VERSION.zip\r\"
-              expect \"Uploading\"
-              expect \"100%\"
-              expect \"sftp>\"
-              send \"cd '/home/pfs/project/realme-c2/$BASE/Fastboot Rom'\r\"
+              send \"cd '/home/pfs/project/rmx-1941/$BASE/Fastboot Rom'\r\"
               set timeout -1
               send \"put Fastboot$VERSION.zip\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Boot'\r\"
+              send \"cd '/home/pfs/project/rmx-1941/$BASE/Stock Image/Boot'\r\"
               set timeout -1
               send \"put Stockboot$VERSION.img\r\"
               expect \"Uploading\"
               expect \"100%\"
               expect \"sftp>\"
-              send \"cd '/home/pfs/project/realme-c2/$BASE/Stock Image/Vendor'\r\"
+              send \"cd '/home/pfs/project/rmx-1941/$BASE/Stock Image/Vendor'\r\"
               set timeout -1
               send \"put vendor$VERSION.zip\r\"
               expect \"Uploading\"
@@ -118,11 +102,3 @@ jobs:
               send \"bye\r\"
               interact"
 
-       - name: Uploading Files to Android File Host
-         run: |
-#             curl -ftp-pasv -T $FIRMWARE_NAME ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-#             curl -ftp-pasv -T costormui.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-#             curl -ftp-pasv -T $FIRMWARE_ZIP_NAME.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-#             curl -ftp-pasv -T boot.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-#             curl -ftp-pasv -T vendor.img ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
-#             curl -ftp-pasv -T vendor.zip ftp://${{ secrets.AFHUSER }}:${{ secrets.AFHPASS }}@uploads.androidfilehost.com
